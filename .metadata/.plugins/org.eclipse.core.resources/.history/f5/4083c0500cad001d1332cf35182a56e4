@@ -1,0 +1,147 @@
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+
+class Team extends JFrame implements ActionListener{
+
+	private JButton[] btn = new JButton[10];
+
+	Container contentPane = null;
+	JPanel p = null;
+
+	public Team() {
+		System.out.println("Team 생성자");
+
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		contentPane = getContentPane(); 
+
+		p = new JPanel();
+		p.setLayout(new GridLayout(5,2)); 
+		contentPane.add(p);
+
+		String[] btnTitle = {"기아", "삼성", "SSG", "롯데", "KT", "NC", "LG", "한화", "두산", "키움"};
+
+		for(int i=0;i<btn.length;i++) {
+			btn[i] = new JButton(btnTitle[i]);
+			btn[i].addActionListener(this);
+			p.add(btn[i]);
+		}
+
+		setTitle("Team"); // 제목 설정
+		setSize(400,400);
+		setLocation(350,10);
+		setVisible(true);
+		setResizable(false);
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		Object obj = e.getSource();
+
+		if(obj == btn[0]) {
+			new Player("기아");
+		}
+		else if (obj == btn[1]) {
+			new Player("삼성");
+		}
+		else if (obj == btn[2]) {
+			new Player("SSG");
+		}
+		else if (obj == btn[3]) {
+			new Player("롯데");
+		}
+		else if (obj == btn[4]) {
+			new Player("KT");
+		}
+		else if (obj == btn[5]) {
+			new Player("NC");
+		}
+		else if (obj == btn[6]) {
+			new Player("LG");
+		}
+		else if (obj == btn[7]) {
+			new Player("한화");
+		}
+		else if (obj == btn[8]) {
+			new Player("두산");
+		}
+		else if (obj == btn[9]) {
+			new Player("키움");
+		}
+	}
+
+}
+
+class Player extends JFrame implements ActionListener{
+
+	private JButton b1 = null;
+	private JButton b2 = null;
+
+	Container contentPane = null;
+	JPanel p = null;
+
+	private String team;
+
+	public Player(String team) {
+		this.team = team;
+
+		System.out.println("Player 생성자");
+
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		contentPane = getContentPane();
+
+		p = new JPanel();
+		p.setLayout(new GridLayout(1,2));
+		contentPane.add(p);
+
+		b1 = new JButton("투수");
+		b2 = new JButton("타자");
+
+		p.add(b1);
+		p.add(b2);
+
+		b1.addActionListener(this);
+		b2.addActionListener(this);
+
+		setTitle(team); // 제목 설정
+		setSize(200,200);
+		setLocation(750,10);
+		setVisible(true);
+
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		Object obj = e.getSource();
+
+		if(obj == b1) {
+			new Pitcher(team,"투수");
+		}
+		else if(obj == b2) {
+			new Hitter(team,"타자");
+		}
+	}
+
+}
+
+public class ProjectMain extends JFrame{
+	public static void main(String[] args) {
+		new Team();
+	}
+}

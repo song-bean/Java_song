@@ -1,0 +1,69 @@
+drop table team cascade constraints;
+create table team(
+	tno number unique,
+	club varchar2(10) primary key,
+	wins number default 0
+);
+
+drop table pitcher cascade constraints;
+create table pitcher(
+	pno number,
+	club references team(club) on delete cascade,
+	pplayer varchar2(10) default '투수' check(pplayer in('투수')),
+	pnum number,
+	pname varchar2(12),
+	ERA number(10,5),
+	strikeout number
+);
+
+drop table hitter;
+create table hitter(
+	hno number,
+	club references team(club) on delete cascade,
+	hplayer varchar2(10) default '타자' check(hplayer in('타자')),
+	hnum number,
+	hname varchar2(12),
+	position varchar2(15),
+	BA number(10,5),
+	hit number
+);
+
+insert into team values(1,'기아',11);
+insert into team values(2,'삼성',8);
+insert into team values(3,'SSG',5);
+insert into team values(4,'롯데',2);
+insert into team values(5,'KT',1);
+insert into team values(6,'NC',1);
+insert into team values(7,'LG',2);
+insert into team values(8,'한화',1);
+insert into team values(9,'두산',6);
+insert into team values(10,'키움',0);
+
+
+insert into pitcher values(1,'기아','투수',54,'양현종',3.85,141);
+insert into pitcher values(2,'기아','투수',48,'이의리',3.86,161);
+insert into pitcher values(1,'삼성','투수',57,'수아레즈',2.49,159);
+insert into pitcher values(1,'SSG','투수',29,'김광현',2.13,153);
+insert into pitcher values(1,'롯데','투수',21,'박세웅',3.89,146);
+insert into pitcher values(1,'KT','투수',30,'소형준',3.05,117);
+insert into pitcher values(1,'NC','투수',40,'루친스키',2.97,194);
+insert into pitcher values(1,'LG','투수',3,'켈리',2.54,153);
+insert into pitcher values(1,'한화','투수',53,'김민우',4.36,129);
+insert into pitcher values(1,'두산','투수',61,'최원준',3.6,113);
+insert into pitcher values(1,'키움','투수',41,'안우진',2.11,224);
+
+
+insert into hitter values(1,'기아','타자',3,'김선빈','내야수',0.328,145);
+insert into hitter values(2,'기아','타자',47,'나성범','외야수',0.333,180);
+insert into hitter values(1,'삼성','타자',47,'강민호','포수',0.328,102);
+insert into hitter values(1,'롯데','타자',8,'안치홍','내야수',0.238,140);
+insert into hitter values(1,'SSG','타자',0,'김강민','외야수',0.325,16);
+insert into hitter values(1,'KT','타자',0,'김강민','외야수',0.325,16);
+insert into hitter values(1,'NC','타자',0,'김강민','외야수',0.325,16);
+insert into hitter values(1,'LG','타자',0,'김강민','외야수',0.325,16);
+insert into hitter values(1,'한화','타자',0,'김강민','외야수',0.325,16);
+insert into hitter values(1,'두산','타자',0,'김강민','외야수',0.325,16);
+insert into hitter values(1,'키움','타자',51,'이정후','외야수',0.349,);
+
+insert into hitter values 
+((select max(hno) from hitter where club = '기아')+1, '기아', '타자', 5, '메이플', '내야수', 0.328,15);

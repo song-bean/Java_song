@@ -1,0 +1,30 @@
+
+public class HitterBean {
+	private int pno;
+	private String club;
+	private String hplayer;
+	private int hnum;
+	private String hname; 
+	private String position;
+	private double ba;
+	private	int hit;
+	
+	public HitterBean() {
+		
+	}
+
+	public HitterBean(int pno, String club, String hplayer, int hnum, String hname, String position, double ba, int hit) {
+		super();
+		this.pno = pno;
+		this.club = club;
+		this.hplayer = hplayer;
+		this.hnum = hnum;
+		this.hname = hname;
+		this.position = position;
+		this.ba = ba;
+		this.hit = hit;
+	}
+	
+	
+}
+

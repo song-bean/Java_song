@@ -1,0 +1,96 @@
+package Hitter;
+
+public class HitterBean {
+	private int hno;
+	private String club;
+	private String hplayer;
+	private int hnum;
+	private String hname; 
+	private String position;
+	private double ba;
+	private	int hit;
+	
+	public HitterBean() {
+		
+	}
+
+	public HitterBean(int hno, String club, String hplayer, int hnum, String hname, String position, double ba, int hit) {
+		this.hno = hno;
+		this.club = club;
+		this.hplayer = hplayer;
+		this.hnum = hnum;
+		this.hname = hname;
+		this.position = position;
+		this.ba = ba;
+		this.hit = hit;
+	}
+
+	//setter
+	public void setHno(int hno) {
+		this.hno = hno;
+	}
+
+	public void setClub(String club) {
+		this.club = club;
+	}
+
+	public void setHplayer(String hplayer) {
+		this.hplayer = hplayer;
+	}
+
+	public void setHnum(int hnum) {
+		this.hnum = hnum;
+	}
+
+	public void setHname(String hname) {
+		this.hname = hname;
+	}
+
+	public void setPosition(String position) {
+		this.position = position;
+	}
+
+	public void setBa(double ba) {
+		this.ba = ba;
+	}
+
+	public void setHit(int hit) {
+		this.hit = hit;
+	}
+
+	
+	//getter
+	public int getHno() {
+		return hno;
+	}
+
+	public String getClub() {
+		return club;
+	}
+
+	public String getHplayer() {
+		return hplayer;
+	}
+
+	public int getHnum() {
+		return hnum;
+	}
+
+	public String getHname() {
+		return hname;
+	}
+
+	public String getPosition() {
+		return position;
+	}
+
+	public double getBa() {
+		return ba;
+	}
+
+	public int getHit() {
+		return hit;
+	}
+	
+}
+

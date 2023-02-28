@@ -1,0 +1,68 @@
+public class PitcherBean {
+	private String club;
+	private String player; 
+	private int num;
+	private String name;
+	private double era;
+	private int strike;
+	
+	//생성자
+	public PitcherBean() {
+		super();
+	}
+	
+	public PitcherBean(String club, String player, int num, String name, double era, int strike) {
+		super();
+		this.club = club;
+		this.player = player;
+		this.num = num;
+		this.name = name;
+		this.era = era;
+		this.strike = strike;
+	}
+
+	//setter
+	public void setClub(String team) {
+		this.club = club;
+	}
+	public void setPlayer(String player) {
+		this.player = player;
+	}
+	public void setNum(int num) {
+		this.num = num;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public void setEra(double era) {
+		this.era = era;
+	}
+	public void setStrike(int strike) {
+		this.strike = strike;
+	}
+	
+	
+	//getter
+	public int getNo() {
+		return no;
+	}
+	public String getTeam() {
+		return team;
+	}
+	public String getPlayer() {
+		return player;
+	}
+	public int getNum() {
+		return num;
+	}
+	public String getName() {
+		return name;
+	}
+	public double getEra() {
+		return era;
+	}
+	public int getStrike() {
+		return strike;
+	}
+	
+}

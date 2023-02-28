@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;Ex08_03_staticInner&apos; to &apos;Ex08_03_LocalInner&apos;&#x0A;- Original project: &apos;08_내부클래스&apos;&#x0A;- Original element: &apos;Ex08_03_staticInner&apos;&#x0A;- Renamed element: &apos;Ex08_03_LocalInner&apos;&#x0A;- Update references to refactored element&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;Ex08_03_staticInner&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;{Ex08_03_staticInner.java[Ex08_03_staticInner" matchStrategy="1" name="Ex08_03_LocalInner" qualified="false" references="true" similarDeclarations="false" stamp="1673399616614" textual="false" version="1.0"/>
+</session>

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;12_입출력&apos; to &apos;12_파일입출력&apos;" description="Rename resource &apos;12_입출력&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="/12_입출력" name="12_파일입출력" stamp="1674005396494" updateReferences="true"/>
+</session>

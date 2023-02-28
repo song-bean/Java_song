@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;Ex01_01_기본형&apos; to &apos;Ex01_01_출력문&apos;&#x0A;- Original project: &apos;01_자료형과 기본 입출력&apos;&#x0A;- Original element: &apos;Ex01_01_기본형&apos;&#x0A;- Renamed element: &apos;Ex01_01_출력문&apos;&#x0A;- Update references to refactored element&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;Ex01_01_기본형&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;{Ex01_01_기본형.java[Ex01_01_기본형" matchStrategy="1" name="Ex01_01_출력문" qualified="false" references="true" similarDeclarations="false" stamp="1672043125081" textual="false" version="1.0"/>
+</session>

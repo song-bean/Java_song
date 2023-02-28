@@ -1,0 +1,29 @@
+memo.txt
+
+debug 하는 방법
+시작하려는 라인번호 우클릭하고 toggle breakpoint
+아무곳이나 우클릭하고 debug as
+F6누르면서 디버그 과정 보기 
+빨간 사각형이 없어질 때 까지 누르기
+중간에 멈추고 싶으면 오른쪽 위 디버그버튼(벌레같이 생긴 버튼) 옆 자바버튼 누르기
+
+Ctrl + Shift + o 자동 임포트
+
+//pdf 7.생성자,상속,다형성 - 55pg 참고
+//접근 제어자: public (어디서나 다 사용 가능)
+//			protected (같은 패키지에서는 누구나 가능, 다른 패키지에서는 자식만 가능)
+//			default (default는 아무것도 안쓰는게 default임, 같은 패키지면 누구나 가능, 다른 패키지면 자식도 못씀)
+//			private (오직 만든(선언한) 클래스에서만 가능)
+//그 외: static, 
+//		final(클래스(이 클래스가 끝이다 --> 상속 받는 클래스가 있을 수 없다), 메서드(오버라이딩 못함), 변수(값을 변경 못함))
+
+
+
+**클래스
+**상속
+**예외처리
+**익명클래스
+**Ex_09_03_String 
+***컬렉션 아주 중요!!!*** - Ex10_02_ArrayList -ArrayList **x100
+**Ex12_04_FileInputStream,Ex12_05_FileInputStream
+**Ex12_08_Reader_Writer 외우고 있어야 함

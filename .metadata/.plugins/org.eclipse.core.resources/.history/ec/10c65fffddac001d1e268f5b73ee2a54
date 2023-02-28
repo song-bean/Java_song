@@ -1,0 +1,46 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class insertPitcher implements ActionListener{
+	
+	
+	
+	public int insertPitcher(PitcherBean pb) {
+		cnt = -1;
+		//getConnection();
+		PreparedStatement ps = null;
+		
+		String sql = "insert into products values(prdseq.nextval,?,?,?,?,?)";
+		try {
+			ps = conn.prepareStatement(sql);
+			ps.setString(1, pb.getName());
+			ps.setInt(2,pb.getStock());
+			ps.setInt(3, pb.getPrice());
+			ps.setString(4, pb.getCategory());
+			ps.setString(5, pb.getInputdate());
+			
+			cnt = ps.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+//				if(conn != null) 
+//					conn.close();
+				if(ps != null)
+					ps.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return cnt;
+	}
+	
+	public void actionPerformed(ActionEvent e) {
+		
+		
+		
+	}
+
+}

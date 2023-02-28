@@ -1,0 +1,64 @@
+import java.awt.Container;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+import Hitter.Hitter;
+import Pitcher.Pitcher;
+
+public class Player extends JFrame implements ActionListener{
+
+	private JButton b1 = null;
+	private JButton b2 = null;
+
+	Container contentPane = null;
+	JPanel p = null;
+
+	private String team;
+
+	public Player(String team) {
+		this.team = team;
+
+		System.out.println("Player 생성자");
+
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		contentPane = getContentPane();
+
+		p = new JPanel();
+		p.setLayout(new GridLayout(1,2));
+		contentPane.add(p);
+
+		b1 = new JButton("투수");
+		b2 = new JButton("타자");
+
+		p.add(b1);
+		p.add(b2);
+
+		b1.addActionListener(this);
+		b2.addActionListener(this);
+
+		setTitle(team); // 제목 설정
+		setSize(600,100);
+		setLocation(750,10);
+		setVisible(true);
+
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		Object obj = e.getSource();
+
+		if(obj == b1) {
+			new Pitcher(team,"투수");
+		}
+		else if(obj == b2) {
+			new Hitter(team,"타자");
+		}
+	}
+
+}
+

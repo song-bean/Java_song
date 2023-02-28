@@ -1,0 +1,35 @@
+**Ex_09_03_String 
+
+-System.out.println(s1.toString()); // 주소를 리턴 
+	System.out.println(s1); // 참조변수만 써도 toString()이 자동으로 붙음
+	String의 toString은 문자열을 리턴
+-boolean result = s1.equals(s2); // 둘의 주소가 같은 지 비교하는 것(원래 기능) - 클래스일 때 - 오버라이딩을 통해 기능 바꿀 수 있음
+-boolean result1 = s1.equals(s2); // 문자열 비교(대소문자까지 비교)(boolean) - 문자열일때
+-boolean result1 = s1.equalsIgnoreCase(s2);  //대소문자 무시하고 비교 (boolean)
+-int result2 = s1.compareTo(s2); //c(99) C(67)이므로 32출력, 끝까지 완전 똑같으면 0 (대소문자까지 비교) 
+-int result2 = s1.compareToIgnoreCase(s2); //대소문자 무시하고 비교 (int) --> 아스키 코드값 비교해고 빼서 정수로 알려줌
+-String s4 = s1.concat(s3); // s1에 s3 연결해라
+-int result3 = s1.indexOf("nice"); // nice가 몇 번째 자리(0번째부터 셈)에 있냐, 만약 못찾으면 -1 
+-result3 = s1.lastIndexOf(97);
+	result3 = s1.lastIndexOf('a'); // 뒤에서부터 a가 어디에 있는지 찾음, 마지막 a의 위치가 어디냐 
+-String result4 = s1.substring(3,9); // 3번째부터 9번째 '앞'까지만 가져옴 --> (3~8), 문자열 일부 가지고 올 때 사용하는 메서드
+-result4 = s1.substring(7); // 7번째부터 끝까지 가져옴
+-result4 = s1.replace('a', 'x'); // a --> x로 변경, 옛날 문자 --> 새 문자
+-result4 = s1.toLowerCase(); //전부 다 소문자로 바꿔줌
+-result4 = s1.toUpperCase(); //전부 다 대문자로 바꿔줌
+-System.out.println(s1.contains("ce")); // ce가 포함되어 있으면 true
+-String s6 = s5.trim(); // 첫 글자 앞과 마지막 글자 뒤 공백을 없앰
+-char ch = s1.charAt(2); // 0부터 셈, 이 위치의 문자 가져옴
+-//.의 위치를 찾는 메서드
+//일부를 가져오는 메서드
+	String fullName = "Hello.java"; // Picture.jpg
+	int index = fullName.indexOf(".");
+	String fileName = fullName.substring(0,index) ; // Hello
+	String ext = fullName.substring(index+1);// java
+		
+	System.out.println("파일명:" + fileName);
+	System.out.println("확장자:" + ext);
+		
+		
+		
+		

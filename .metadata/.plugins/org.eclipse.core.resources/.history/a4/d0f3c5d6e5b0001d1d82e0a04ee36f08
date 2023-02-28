@@ -1,0 +1,93 @@
+import java.awt.Container;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class Team extends JFrame implements ActionListener{
+
+	private JButton[] btn = new JButton[10];
+
+	Container contentPane = null;
+	JPanel p = null;
+
+	public Team() {
+		System.out.println("Team 생성자");
+
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		contentPane = getContentPane(); 
+
+		p = new JPanel();
+		p.setLayout(new GridLayout(5,2)); 
+		contentPane.add(p);
+
+		ImageIcon[] logo = {	
+							new ImageIcon("logo/기아.jpg"),
+							new ImageIcon("logo/삼성.jpg"),
+							new ImageIcon("logo/SSG.jpg"),
+							new ImageIcon("logo/기아.jpg"),
+							new ImageIcon("logo/기아.jpg"),
+							new ImageIcon("logo/KT.jpg"),
+							new ImageIcon("logo/NC.jpg"),
+							new ImageIcon("logo/LG.jpg"),
+							new ImageIcon("logo/한화.jpg"),
+							new ImageIcon("logo/기아.jpg")
+		};
+		
+		String[] btnTitle = {"기아", "삼성", "SSG", "롯데", "KT", "NC", "LG", "한화", "두산", "키움"};
+
+		for(int i=0;i<btn.length;i++) {
+			btn[i] = new JButton(btnTitle[i]);
+			btn[i].addActionListener(this);
+			p.add(btn[i]);
+		}
+		//btn[0].setic
+		
+		setTitle("Team"); // 제목 설정
+		setSize(400,400);
+		setLocation(350,10);
+		setVisible(true);
+		setResizable(false);
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		Object obj = e.getSource();
+
+		if(obj == btn[0]) {
+			new Player("기아");
+		}
+		else if (obj == btn[1]) {
+			new Player("삼성");
+		}
+		else if (obj == btn[2]) {
+			new Player("SSG");
+		}
+		else if (obj == btn[3]) {
+			new Player("롯데");
+		}
+		else if (obj == btn[4]) {
+			new Player("KT");
+		}
+		else if (obj == btn[5]) {
+			new Player("NC");
+		}
+		else if (obj == btn[6]) {
+			new Player("LG");
+		}
+		else if (obj == btn[7]) {
+			new Player("한화");
+		}
+		else if (obj == btn[8]) {
+			new Player("두산");
+		}
+		else if (obj == btn[9]) {
+			new Player("키움");
+		}
+	}
+
+}

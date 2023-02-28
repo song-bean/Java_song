@@ -1,0 +1,18 @@
+
+public class HitterBean {
+	private int pno;
+	private String club;
+	private String hplayer;
+	private int hnum;
+	private String hname; 
+	private String position;
+	private double ba;
+	private	int hit;
+	
+	public HitterBean() {
+		
+	}
+	
+	
+}
+

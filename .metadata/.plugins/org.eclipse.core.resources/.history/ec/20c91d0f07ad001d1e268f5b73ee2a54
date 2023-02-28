@@ -1,0 +1,823 @@
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+
+class Team extends JFrame implements ActionListener{
+
+	private JButton[] btn = new JButton[10];
+
+	Container contentPane = null;
+	JPanel p = null;
+
+	public Team() {
+		System.out.println("Team 생성자");
+
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		contentPane = getContentPane(); 
+
+		p = new JPanel();
+		p.setLayout(new GridLayout(5,2)); 
+		contentPane.add(p);
+
+		String[] btnTitle = {"기아", "삼성", "SSG", "롯데", "KT", "NC", "LG", "한화", "두산", "키움"};
+
+		for(int i=0;i<btn.length;i++) {
+			btn[i] = new JButton(btnTitle[i]);
+			btn[i].addActionListener(this);
+			p.add(btn[i]);
+		}
+
+		setTitle("Team"); // 제목 설정
+		setSize(400,400);
+		setLocation(350,10);
+		setVisible(true);
+		setResizable(false);
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		Object obj = e.getSource();
+
+		if(obj == btn[0]) {
+			new Player("기아");
+		}
+		else if (obj == btn[1]) {
+			new Player("삼성");
+		}
+		else if (obj == btn[2]) {
+			new Player("SSG");
+		}
+		else if (obj == btn[3]) {
+			new Player("롯데");
+		}
+		else if (obj == btn[4]) {
+			new Player("KT");
+		}
+		else if (obj == btn[5]) {
+			new Player("NC");
+		}
+		else if (obj == btn[6]) {
+			new Player("LG");
+		}
+		else if (obj == btn[7]) {
+			new Player("한화");
+		}
+		else if (obj == btn[8]) {
+			new Player("두산");
+		}
+		else if (obj == btn[9]) {
+			new Player("키움");
+		}
+	}
+
+}
+
+class Player extends JFrame implements ActionListener{
+
+	private JButton b1 = null;
+	private JButton b2 = null;
+
+	Container contentPane = null;
+	JPanel p = null;
+
+	private String team;
+
+	public Player(String team) {
+		this.team = team;
+
+		System.out.println("Player 생성자");
+
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		contentPane = getContentPane();
+
+		p = new JPanel();
+		p.setLayout(new GridLayout(1,2));
+		contentPane.add(p);
+
+		b1 = new JButton("투수");
+		b2 = new JButton("타자");
+
+		p.add(b1);
+		p.add(b2);
+
+		b1.addActionListener(this);
+		b2.addActionListener(this);
+
+		setTitle(team); // 제목 설정
+		setSize(200,200);
+		setLocation(750,10);
+		setVisible(true);
+
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		Object obj = e.getSource();
+
+		if(obj == b1) {
+			new Pitcher(team,"투수");
+		}
+		else if(obj == b2) {
+			new Hitter(team,"타자");
+		}
+	}
+
+}
+
+class Pitcher extends JFrame implements ActionListener {
+
+	private String team, player;
+
+	private String[] columnNames = {"번호","구단", "투수", "등번호", "이름", "평균자책점", "탈삼진"};
+	private Object[][] rowData;
+	private JTable table = null;
+	private JScrollPane scrollPane = null;
+	private JButton[] btn = new JButton[4];
+
+	private JTextField txtPno = new JTextField();
+	private JTextField txtClub = new JTextField();
+	private JTextField txtPplayer = new JTextField();
+	private JTextField txtPnum = new JTextField();
+	private JTextField txtPname = new JTextField();
+	private JTextField txtEra = new JTextField();
+	private JTextField txtStrike = new JTextField();
+
+	PitcherDao pdao = null;
+	ArrayList<PitcherBean> lists = null;
+
+	Container contentPane = null;
+	JPanel pEast = null;
+	JPanel pBtn = null;
+
+	public Pitcher(String team, String player) {
+		this.team = team;
+		this.player = player;
+
+		System.out.println("Pitcher 생성자");
+
+		pdao = new PitcherDao();
+		System.out.println(team);
+		lists = pdao.getAllPitcher(team);
+		rowData = new Object[lists.size()][columnNames.length];
+		fillData();
+
+		table = new JTable(rowData,columnNames);
+		scrollPane = new JScrollPane(table);
+
+		compose();
+		setevent();
+
+
+		setTitle(team + " " +player); 
+		setSize(665,500);
+		setLocation(750,238);
+		setVisible(true);
+		setResizable(false);
+	}
+
+	public Pitcher() {
+
+	}
+
+	private void setevent() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		txtPnum.addKeyListener(new KeyHandler());
+		txtEra.addKeyListener(new KeyHandler());
+		txtStrike.addKeyListener(new KeyHandler());
+
+		table.addMouseListener(new MouseHandler());
+	}
+
+
+	private void compose() {
+
+		contentPane = getContentPane(); 
+		contentPane.setLayout(null);
+		scrollPane.setBounds(10,30,380,400);
+		contentPane.add(scrollPane);
+		scrollPane.setBackground(Color.DARK_GRAY);
+
+		pEast = new JPanel(); 
+		pEast.setLayout(null); 
+		pEast.setBounds(400,0,300,300); 
+		contentPane.add(pEast);
+
+		JLabel lbPno = new JLabel("번호");
+		JLabel lbClub = new JLabel("구단");
+		JLabel lbPplayer = new JLabel("투수");
+		JLabel lbPnum = new JLabel("등번호");
+		JLabel lbPname = new JLabel("이름");
+		JLabel lbEra = new JLabel("평균자책점");
+		JLabel lbStrike = new JLabel("탈삼진");
+
+		lbPno.setBounds(110,15,150,20);
+		lbClub.setBounds(50,80,150,20);
+		lbPplayer.setBounds(175, 80, 150, 20);
+		lbPnum.setBounds(45, 140, 150, 20);
+		lbPname.setBounds(175, 140, 150, 20);
+		lbEra.setBounds(35, 200, 150, 20);
+		lbStrike.setBounds(170, 200, 150, 20);
+
+		txtPno.setBounds(75, 40, 100, 20);
+		txtClub.setBounds(15, 105, 100, 20);
+		txtPplayer.setBounds(135, 105, 100, 20);
+		txtPnum.setBounds(15, 165, 100, 20);
+		txtPname.setBounds(135, 165, 100, 20);
+		txtEra.setBounds(15, 225, 100, 20);
+		txtStrike.setBounds(135, 225, 100, 20);
+
+		pEast.add(lbPno);
+		pEast.add(lbClub);
+		pEast.add(lbPplayer);
+		pEast.add(lbPnum);
+		pEast.add(lbPname);
+		pEast.add(lbEra);
+		pEast.add(lbStrike);
+
+		pEast.add(txtPno);
+		pEast.add(txtClub);
+		pEast.add(txtPplayer);
+		pEast.add(txtPnum);
+		pEast.add(txtPname);
+		pEast.add(txtEra);
+		pEast.add(txtStrike);
+		txtPno.setBackground(Color.lightGray);
+		txtClub.setBackground(Color.lightGray);
+		txtPplayer.setBackground(Color.lightGray);
+		txtPnum.setBackground(Color.lightGray);
+		txtPname.setBackground(Color.lightGray);
+		txtEra.setBackground(Color.lightGray);
+		txtStrike.setBackground(Color.lightGray);
+
+		txtClub.setText(team);
+		txtClub.setEnabled(false);		
+		txtPplayer.setText(player);
+		txtPplayer.setEnabled(false);
+
+		pBtn = new JPanel();
+		pBtn.setLayout(new GridLayout(2,2));
+		pBtn.setBounds(403, 280, 250, 150);
+		contentPane.add(pBtn);
+
+		String[] btnTitle = {"Insert", "Update", "Delete", "Exit"}; 
+		for(int i=0;i<btn.length;i++) {
+			btn[i] = new JButton(btnTitle[i]);
+			btn[i].addActionListener(this);
+			pBtn.add(btn[i]);
+		}
+
+	}
+
+	private void fillData() {
+		Object[] arr = lists.toArray();
+		int j = 0;
+		for(int i=0;i<arr.length;i++) {
+			PitcherBean pb = (PitcherBean)arr[i];
+
+			rowData[i][j++] = pb.getPno();
+			rowData[i][j++] = pb.getClub();
+			rowData[i][j++] = pb.getPplayer();
+			rowData[i][j++] = pb.getPnum();
+			rowData[i][j++] = pb.getPname();
+			rowData[i][j++] = pb.getEra();
+			rowData[i][j++] = pb.getStrike();
+			j = 0;
+		}
+	}
+
+
+	public void actionPerformed(ActionEvent e) {
+
+		Object obj = e.getSource();
+		if(obj == btn[0]) {
+			System.out.println("Insert 버튼");
+			insertPitcher();
+		}
+		else if(obj == btn[1]) {
+			System.out.println("Update 버튼");
+			updatePitcher();
+		}
+		else if(obj == btn[2]) {
+			System.out.println("Delete 버튼");
+			deletePitcher();
+		}
+		else if(obj == btn[3]) {
+			System.out.println("Exit 버튼");
+			pdao.exit();
+			System.exit(0);
+		}
+	}
+
+	private void insertPitcher() {
+		boolean result = checkPitcher();
+
+		int pno = Integer.parseInt(txtPno.getText());
+		int pnum = Integer.parseInt(txtPnum.getText());
+		String pname = txtPname.getText();
+		double era = Double.parseDouble(txtEra.getText());
+		int strike = Integer.parseInt(txtStrike.getText());
+
+		if(result == true) {
+			PitcherBean pb = new PitcherBean();
+			pb.setPno(pno);
+			pb.setClub(team);
+			pb.setPplayer(player);
+			pb.setPnum(pnum);
+			pb.setPname(pname);
+			pb.setEra(era);
+			pb.setStrike(strike);
+
+			int cnt = pdao.insertPitcher(pb);
+			if(cnt > 0) {
+				System.out.println("Insert 성공");
+				clearTextField();
+				getAllPitcher();
+			}
+			else {
+				System.out.println("Insert 실패");
+			}
+		}
+	}
+
+	private void updatePitcher() {
+		boolean result = checkPitcher();
+
+		int pno  = Integer.parseInt(txtPno.getText());
+		int pnum = Integer.parseInt(txtPnum.getText());
+		String pname = txtPname.getText();
+		double era = Double.parseDouble(txtEra.getText());
+		int strike = Integer.parseInt(txtStrike.getText());
+
+		if(result == true) {
+			PitcherBean pb = new PitcherBean(pno,team,player,pnum,pname,era,strike);
+
+			int cnt = pdao.updatePitcher(pb);
+			if(cnt > 0) {
+				System.out.println("Update 성공");
+				clearTextField();
+				getAllPitcher();
+			}
+			else {
+				System.out.println("Update 실패");
+			}
+		}
+	}
+
+	private void deletePitcher() {
+		int row = table.getSelectedRow();
+
+		int pno  = Integer.parseInt(txtPno.getText());
+
+		if(row == -1) {
+			JOptionPane.showMessageDialog(this,"삭제할 대상을 클릭하세요","에러 발생", JOptionPane.INFORMATION_MESSAGE);
+		}
+		else {
+			int cnt = pdao.deletePitcher(pno, team);
+			if(cnt > 0) {
+				System.out.println("Delete 성공");
+				clearTextField();
+				getAllPitcher();
+			}
+			else {
+				System.out.println("Delete 실패");
+			}	
+		}
+	}
+
+	public boolean checkPitcher() {
+		if(txtPno.getText().length() == 0) {
+			JOptionPane.showMessageDialog(this,"번호를 입력하세요","에러 발생", JOptionPane.WARNING_MESSAGE);
+			txtPno.requestFocus();
+			return false;
+		}
+		if(txtPnum.getText().length() == 0) {
+			JOptionPane.showMessageDialog(this,"등번호를 입력하세요","에러 발생", JOptionPane.WARNING_MESSAGE);
+			txtPnum.requestFocus();
+			return false;
+		}
+		if(txtPname.getText().length() == 0) {
+			JOptionPane.showMessageDialog(this,"이름을 입력하세요","에러 발생", JOptionPane.WARNING_MESSAGE);
+			txtPname.requestFocus();
+			return false;
+		}
+		if(txtEra.getText().length() == 0) {
+			JOptionPane.showMessageDialog(this,"평균자책점을 입력하세요","에러 발생", JOptionPane.WARNING_MESSAGE);
+			txtEra.requestFocus();
+			return false;
+		}
+		if(txtStrike.getText().length() == 0) {
+			JOptionPane.showMessageDialog(this,"삼진 수를 입력하세요","에러 발생", JOptionPane.WARNING_MESSAGE);
+			txtStrike.requestFocus();
+			return false;
+		}
+		return true;
+	}
+
+	private void clearTextField() {
+		txtPno.setText("");
+		txtPnum.setText("");
+		txtPname.setText("");
+		txtEra.setText("");
+		txtStrike.setText("");
+	}
+
+	private void getAllPitcher() {
+		lists = pdao.getAllPitcher(team);
+		rowData = new Object[lists.size()][columnNames.length];
+		fillData();
+
+		table = new JTable(rowData,columnNames);
+		scrollPane.setViewportView(table);
+
+		table.addMouseListener(new MouseHandler()); 
+	}//getAllPitcher
+
+	class KeyHandler extends KeyAdapter{
+		public void keyReleased(KeyEvent e) { 
+			Object obj = e.getSource();
+			if(obj == txtPno) {
+				try {
+					Integer.parseInt(txtPno.getText());
+				} catch(NumberFormatException nfe) {
+					JOptionPane.showMessageDialog(txtPno, "숫자로 입력하세요","에러 발생", JOptionPane.ERROR_MESSAGE);
+					txtPno.setText("");
+					txtPno.requestFocus();
+				}
+			}
+			else if(obj == txtPnum) {
+				try {
+					Integer.parseInt(txtPnum.getText());
+				} catch(NumberFormatException nfe) {
+					JOptionPane.showMessageDialog(txtPnum, "숫자로 입력하세요","에러 발생", JOptionPane.ERROR_MESSAGE);
+					txtPnum.setText("");
+					txtPnum.requestFocus();
+				}
+			}
+			else if(obj == txtEra){
+				try {
+					Double.parseDouble(txtEra.getText());
+				} catch(NumberFormatException nfe) {
+					JOptionPane.showMessageDialog(txtEra, "숫자로 입력하세요","에러 발생", JOptionPane.ERROR_MESSAGE);
+					txtEra.setText("");
+					txtEra.requestFocus();
+				}
+			}
+			else if(obj == txtStrike){
+				try {
+					Integer.parseInt(txtStrike.getText());
+				} catch(NumberFormatException nfe) {
+					JOptionPane.showMessageDialog(txtStrike, "숫자로 입력하세요","에러 발생", JOptionPane.ERROR_MESSAGE);
+					txtStrike.setText("");
+					txtStrike.requestFocus();
+				}
+			}
+		}//keyReleased
+	}//KeyHandler
+
+	class MouseHandler extends MouseAdapter{
+		public void mouseClicked(MouseEvent e) {
+
+			int row = table.getSelectedRow();
+			System.out.println("row : " + row);
+
+			txtPno.setText(String.valueOf(table.getValueAt(row, 0)));
+			txtClub.setText(team);
+			txtPplayer.setText(player);
+			txtPnum.setText(String.valueOf(table.getValueAt(row, 3)));
+			txtPname.setText(String.valueOf(table.getValueAt(row, 4)));
+			txtEra.setText(String.valueOf(table.getValueAt(row, 5)));
+			txtStrike.setText(String.valueOf(table.getValueAt(row, 6)));
+		}
+	}//MouseHandler
+
+
+}
+
+class Hitter extends JFrame implements ActionListener{
+	private String team, player;
+	private String[] columnNames = {"번호","구단", "타자", "등번호", "이름", "포지션", "타율", "안타"};
+	private Object[][] rowData;
+	private JTable table = null;
+	private JScrollPane scrollPane = null;
+	private JButton[] btn = new JButton[4];
+
+	private JTextField txtHno = new JTextField();
+	private JTextField txtClub = new JTextField();
+	private JTextField txtHplayer = new JTextField();
+	private JTextField txtHnum = new JTextField();
+	private JTextField txtHname = new JTextField();
+	private JTextField txtPosition = new JTextField();
+	private JTextField txtBa = new JTextField();
+	private JTextField txtHit = new JTextField();
+
+	HitterDao hdao = null;
+	ArrayList<HitterBean> lists = null;
+
+	Container contentPane = null;
+	JPanel pEast = null;
+	JPanel pBtn = null;
+
+	public Hitter() {
+
+	}
+
+	public Hitter(String team, String player) {
+		this.team = team;
+		this.player = player;
+		System.out.println("Hitter 생성자");
+
+		hdao = new HitterDao();
+		System.out.println(team);
+		lists = hdao.getAllHitter(team);
+		rowData = new Object[lists.size()][columnNames.length];
+		fillData();
+
+		table = new JTable(rowData,columnNames);
+		scrollPane = new JScrollPane(table);
+
+		compose();
+		setevent();
+
+		setTitle(team + " " +player); 
+		setSize(665,500);
+		setLocation(750,238);
+		setVisible(true);
+		setResizable(false);
+	}
+
+	private void fillData() {
+		Object[] arr = lists.toArray();
+		int j = 0;
+		for(int i=0;i<arr.length;i++) {
+			HitterBean hb = (HitterBean)arr[i];
+
+			rowData[i][j++] = hb.getHno();
+			rowData[i][j++] = hb.getClub();
+			rowData[i][j++] = hb.getHplayer();
+			rowData[i][j++] = hb.getHnum();
+			rowData[i][j++] = hb.getHname();
+			rowData[i][j++] = hb.getPosition();
+			rowData[i][j++] = hb.getBa();
+			rowData[i][j++] = hb.getHit();
+			j = 0;
+		}
+	}
+
+	private void setevent() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		//		txtPnum.addKeyListener(new KeyHandler());
+		//		txtEra.addKeyListener(new KeyHandler());
+		//		txtStrike.addKeyListener(new KeyHandler());
+		//		
+		table.addMouseListener(new MouseHandler());
+	}
+
+	private void compose() {
+		contentPane = getContentPane(); 
+		contentPane.setLayout(null);
+		scrollPane.setBounds(10,30,380,400);
+		contentPane.add(scrollPane);
+		scrollPane.setBackground(Color.DARK_GRAY);
+
+		pEast = new JPanel(); 
+		pEast.setLayout(null); 
+		pEast.setBounds(400,0,300,300); 
+		contentPane.add(pEast);
+
+		JLabel lbHno = new JLabel("번호");
+		JLabel lbClub = new JLabel("구단");
+		JLabel lbHplayer = new JLabel("타자");
+		JLabel lbHnum = new JLabel("등번호");
+		JLabel lbHname = new JLabel("이름");
+		JLabel lbPosition = new JLabel("포지션");
+		JLabel lbBa = new JLabel("타율");
+		JLabel lbHit = new JLabel("안타");
+
+		lbHno.setBounds(50,30,150,20);
+		lbClub.setBounds(172,30,150,20);
+		lbHplayer.setBounds(50, 90, 150, 20);
+		lbHnum.setBounds(165, 90, 150, 20);
+		lbHname.setBounds(50, 150, 150, 20);
+		lbPosition.setBounds(165, 150, 150, 20);
+		lbBa.setBounds(50, 210, 150, 20);
+		lbHit.setBounds(173, 210, 150, 20);
+
+		txtHno.setBounds(15, 55, 100, 20);
+		txtClub.setBounds(135, 55, 100, 20);
+		txtHplayer.setBounds(15, 115, 100, 20);
+		txtHnum.setBounds(135, 115, 100, 20);
+		txtHname.setBounds(15, 175, 100, 20);
+		txtPosition.setBounds(135, 175, 100, 20);
+		txtBa.setBounds(15, 235, 100, 20);
+		txtHit.setBounds(135, 235, 100, 20);
+
+		pEast.add(lbHno);
+		pEast.add(lbClub);
+		pEast.add(lbHplayer);
+		pEast.add(lbHnum);
+		pEast.add(lbHname);
+		pEast.add(lbPosition);
+		pEast.add(lbBa);
+		pEast.add(lbHit);
+
+		pEast.add(txtHno);
+		pEast.add(txtClub);
+		pEast.add(txtHplayer);
+		pEast.add(txtHnum);
+		pEast.add(txtHname);
+		pEast.add(txtPosition);
+		pEast.add(txtBa);
+		pEast.add(txtHit);
+		txtHno.setBackground(Color.lightGray);
+		txtClub.setBackground(Color.lightGray);
+		txtHplayer.setBackground(Color.lightGray);
+		txtHnum.setBackground(Color.lightGray);
+		txtHname.setBackground(Color.lightGray);
+		txtPosition.setBackground(Color.lightGray);
+		txtBa.setBackground(Color.lightGray);
+		txtHit.setBackground(Color.lightGray);
+
+		txtClub.setText(team);
+		txtClub.setEnabled(false);		
+		txtHplayer.setText(player);
+		txtHplayer.setEnabled(false);
+
+		pBtn = new JPanel();
+		pBtn.setLayout(new GridLayout(2,2));
+		pBtn.setBounds(403, 280, 250, 150);
+		contentPane.add(pBtn);
+
+		String[] btnTitle = {"Insert", "Update", "Delete", "Exit"}; 
+		for(int i=0;i<btn.length;i++) {
+			btn[i] = new JButton(btnTitle[i]);
+			btn[i].addActionListener(this);
+			pBtn.add(btn[i]);
+		}
+
+	}
+
+	public void actionPerformed(ActionEvent e) {
+
+		Object obj = e.getSource();
+		if(obj == btn[0]) {
+			System.out.println("Insert 버튼");
+			insertHitter();
+		}
+		else if(obj == btn[1]) {
+			System.out.println("Update 버튼");
+			//updateHitter();
+		}
+		else if(obj == btn[2]) {
+			System.out.println("Delete 버튼");
+			//deleteHitter();
+		}
+		else if(obj == btn[3]) {
+			System.out.println("Exit 버튼");
+			hdao.exit();
+			System.exit(0);
+		}
+	}
+	
+	private void insertHitter() {
+		boolean result = checkHitter();
+		
+	}
+
+	public boolean checkHitter() {
+		if(txtHno.getText().length() == 0) {
+			JOptionPane.showMessageDialog(this,"번호를 입력하세요","에러 발생", JOptionPane.WARNING_MESSAGE);
+			txtHno.requestFocus();
+			return false;
+		}
+		if(txtHnum.getText().length() == 0) {
+			JOptionPane.showMessageDialog(this,"등번호를 입력하세요","에러 발생", JOptionPane.WARNING_MESSAGE);
+			txtHnum.requestFocus();
+			return false;
+		}
+		if(txtHname.getText().length() == 0) {
+			JOptionPane.showMessageDialog(this,"이름을 입력하세요","에러 발생", JOptionPane.WARNING_MESSAGE);
+			txtHname.requestFocus();
+			return false;
+		}
+		if(txtPosition.getText().length() == 0) {
+			JOptionPane.showMessageDialog(this,"포지션을 입력하세요","에러 발생", JOptionPane.WARNING_MESSAGE);
+			txtPosition.requestFocus();
+			return false;
+		}
+		if(txtBa.getText().length() == 0) {
+			JOptionPane.showMessageDialog(this,"타율을 입력하세요","에러 발생", JOptionPane.WARNING_MESSAGE);
+			txtBa.requestFocus();
+			return false;
+		}
+		if(txtHit.getText().length() == 0) {
+			JOptionPane.showMessageDialog(this,"안타 수를 입력하세요","에러 발생", JOptionPane.WARNING_MESSAGE);
+			txtHit.requestFocus();
+			return false;
+		}
+		return true;
+	}
+	
+	private void clearTextField() {
+		txtHno.setText("");
+		txtHnum.setText("");
+		txtHname.setText("");
+		txtPosition.setText("");
+		txtBa.setText("");
+		txtHit.setText("");
+	}
+
+	private void getAllHitter() {
+		lists = hdao.getAllHitter(team);
+		rowData = new Object[lists.size()][columnNames.length];
+		fillData();
+
+		table = new JTable(rowData,columnNames);
+		scrollPane.setViewportView(table);
+
+		table.addMouseListener(new MouseHandler()); 
+	}//getAllHitter
+	
+	class KeyHandler extends KeyAdapter{
+		public void keyReleased(KeyEvent e) { 
+			Object obj = e.getSource();
+			if(obj == txtHno) {
+				try {
+					Integer.parseInt(txtHno.getText());
+				} catch(NumberFormatException nfe) {
+					JOptionPane.showMessageDialog(txtHno, "숫자로 입력하세요","에러 발생", JOptionPane.ERROR_MESSAGE);
+					txtHno.setText("");
+					txtHno.requestFocus();
+				}
+			}
+			else if(obj == txtHnum) {
+				try {
+					Integer.parseInt(txtHnum.getText());
+				} catch(NumberFormatException nfe) {
+					JOptionPane.showMessageDialog(txtHnum, "숫자로 입력하세요","에러 발생", JOptionPane.ERROR_MESSAGE);
+					txtHnum.setText("");
+					txtHnum.requestFocus();
+				}
+			}
+			else if(obj == txtBa){
+				try {
+					Double.parseDouble(txtBa.getText());
+				} catch(NumberFormatException nfe) {
+					JOptionPane.showMessageDialog(txtBa, "숫자로 입력하세요","에러 발생", JOptionPane.ERROR_MESSAGE);
+					txtBa.setText("");
+					txtBa.requestFocus();
+				}
+			}
+			else if(obj == txtHit){
+				try {
+					Integer.parseInt(txtHit.getText());
+				} catch(NumberFormatException nfe) {
+					JOptionPane.showMessageDialog(txtHit, "숫자로 입력하세요","에러 발생", JOptionPane.ERROR_MESSAGE);
+					txtHit.setText("");
+					txtHit.requestFocus();
+				}
+			}
+		}//keyReleased
+	}//KeyHandler
+
+	class MouseHandler extends MouseAdapter{
+		public void mouseClicked(MouseEvent e) {
+
+			int row = table.getSelectedRow();
+			System.out.println("row : " + row);
+
+			txtHno.setText(String.valueOf(table.getValueAt(row, 0)));
+			txtClub.setText(team);
+			txtHplayer.setText(player);
+			txtHnum.setText(String.valueOf(table.getValueAt(row, 3)));
+			txtHname.setText(String.valueOf(table.getValueAt(row, 4)));
+			txtPosition.setText(String.valueOf(table.getValueAt(row, 5)));
+			txtBa.setText(String.valueOf(table.getValueAt(row, 6)));
+			txtHit.setText(String.valueOf(table.getValueAt(row, 7)));
+		}
+	}//MouseHandler
+
+}
+
+public class ProjectMain extends JFrame{
+	public static void main(String[] args) {
+		new Team();
+	}
+}
